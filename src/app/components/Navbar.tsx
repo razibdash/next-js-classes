@@ -2,9 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname=usePathname()
+  const navItems=[
+    {name:"Home",href:'/'},
+    {name:"About",href:'/about'},
+    {name:"Project",href:'/project'},
+    {name:"Skill",href:'/skill'},
+    {name:"Blogs",href:'/blogs'},
+    {name:"Contact",href:'/contact'},
+  ]
+
 
   return (
     <nav className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg">
@@ -17,18 +28,18 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            <Link href="/" className="hover:text-gray-200 transition">
-              Home
-            </Link>
-            <Link href="/about" className="hover:text-gray-200 transition">
-              About
-            </Link>
-            <Link href="/services" className="hover:text-gray-200 transition">
-              Services
-            </Link>
-            <Link href="/contact" className="hover:text-gray-200 transition">
-              Contact
-            </Link>
+            <ul className="hidden md:flex space-x-6">
+                   {
+              navItems.map((item,index)=>{
+                const isActive=pathname===item.href;
+                 
+                return (
+                   <li key={index} className={`${isActive?"text-blue-400 border-b":""}`}> <Link  href={item.href} >{item.name}</Link></li>
+                )
+              })
+              }
+            </ul>
+           
           </div>
 
           {/* Mobile Button */}
@@ -52,8 +63,8 @@ export default function Navbar() {
           <Link href="/about" className="block hover:text-gray-200">
             About
           </Link>
-          <Link href="/services" className="block hover:text-gray-200">
-            Services
+          <Link href="/project" className="block hover:text-gray-200">
+            Project
           </Link>
           <Link href="/contact" className="block hover:text-gray-200">
             Contact

@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import React from 'react'
 
 type Props={
-  params:Promise<{id:string}>
+  params:Promise<{id:string}>,
+  searchParams:Promise<{[key:string]:string|string[]|undefined}>
 }
 
 export async function generateMetadata(
@@ -15,10 +16,25 @@ export async function generateMetadata(
   }
 }
 
-const Blog = async({params}:{params:Props}) => {
+const Blog = async({params,searchParams}:Props) => {
   const {id}= await params;
+  const resolveSearchParams=await searchParams;
+  console.log(Object.entries(resolveSearchParams))
   return (
-    <div>Blog {id}</div>
+    <div>
+       <div>
+        Blog {id}
+       </div>
+       <div>
+         <ul>
+           {
+            Object.entries(resolveSearchParams).map(([key,value])=>(
+               <li key={key}>{key} :{Array.isArray(value)?value.join(', '):value}</li>
+            ))
+           }
+         </ul>
+       </div>
+    </div>
   )
 }
 
